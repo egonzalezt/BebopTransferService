@@ -1,0 +1,21 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\BebopTransferService.Application\BebopTransferService.Application.csproj" />
+    <ProjectReference Include="..\BebopTransferService.Domain\BebopTransferService.Domain.csproj" />
+    <ProjectReference Include="..\BebopTransferService.Infrastructure\BebopTransferService.Infrastructure.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.19.5" />
+    <PackageReference Include="Frieren-Guard" Version="1.0.2" />
+  </ItemGroup>
+
+</Project>
+
