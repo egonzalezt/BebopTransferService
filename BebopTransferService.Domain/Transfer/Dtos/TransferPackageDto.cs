@@ -1,0 +1,35 @@
+﻿namespace BebopTransferService.Domain.Transfer.Dtos;
+
+using Domain.File.Dtos;
+using Transfer.Entities;
+using System.Text.Json.Serialization;
+
+public class TransferPackageDto
+{
+    [JsonPropertyName("id")]
+    public long Id { get; set; }
+    [JsonPropertyName("name")]
+    public string Name { get; set; }
+    [JsonPropertyName("address")]
+    public string Address { get; set; }
+    [JsonPropertyName("email")]
+    public string Email { get; set; }
+    [JsonPropertyName("callbackUrl")]
+    public string CallbackUrl { get; set; }
+    [JsonPropertyName("files")]
+    public FileTransferDto[] Files { get; set; }
+
+    public static TransferPackageDto BuildFromTransfer(Transfer transfer, string callbackUrl)
+    {
+        var files = transfer.Files.Select(FileTransferDto.BuildFromFile).ToArray();
+        return new()
+        {
+            Id = transfer.UserIdentificationNumber,
+            Address = transfer.UserAddress,
+            Email = transfer.Email,
+            Files = files,
+            Name = transfer.UserName,
+            CallbackUrl = callbackUrl
+        };
+    }
+}

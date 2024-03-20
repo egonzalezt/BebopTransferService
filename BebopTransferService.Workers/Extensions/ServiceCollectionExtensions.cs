@@ -25,5 +25,6 @@ public static class ServiceCollectionExtensions
             configuration.GetSection("RabbitMQ:Queues:Publisher").Bind(options)
         );
         services.AddHostedService<TransferConsumer>();
+        services.AddHostedService<TransferReplyConsumer>();        
     }
 }

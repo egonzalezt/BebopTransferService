@@ -10,6 +10,7 @@ using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Frieren_Guard;
 using Frieren_Guard.Events;
 using Exceptions;
+using Domain.SharedKernel.Exceptions;
 
 public abstract class BaseRabbitMQWorker : BackgroundService
 {
@@ -68,35 +69,16 @@ public abstract class BaseRabbitMQWorker : BackgroundService
             }
             catch (InvalidBodyException ex)
             {
-                var headers = new Dictionary<string, object>
-                {
-                    { "ProcessFailed", true }
-                };
-                var properties = _channel.CreateBasicProperties();
-                properties.Headers = headers;
-
                 _logger.LogError(ex, "Invalid Body");
                 _channel.BasicAck(eventArgs.DeliveryTag, false);
             }
             catch (InvalidEventTypeException ex)
             {
-                var headers = new Dictionary<string, object>
-                {
-                    { "ProcessFailed", true }
-                };
-                var properties = _channel.CreateBasicProperties();
-                properties.Headers = headers;
                 _logger.LogError(ex, "Invalid EventType");
                 _channel.BasicAck(eventArgs.DeliveryTag, false);
             }
             catch (HeaderNotFoundException ex)
             {
-                var headers = new Dictionary<string, object>
-                {
-                    { "ProcessFailed", true }
-                };
-                var properties = _channel.CreateBasicProperties();
-                properties.Headers = headers;
                 _logger.LogError(ex, "Invalid EventType");
                 _channel.BasicAck(eventArgs.DeliveryTag, false);
             }

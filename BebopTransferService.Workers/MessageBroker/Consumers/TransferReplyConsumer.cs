@@ -10,21 +10,17 @@ using System.Threading.Tasks;
 using Workers.Extensions;
 using Microsoft.Extensions.DependencyInjection;
 using System.Text;
-using Domain.Transfer;
-using System.Text.Json;
-using Domain.User.Dtos;
 using Application.Interfaces;
 using Infrastructure.EntityFrameworkCore.DbContext;
-using Domain.SharedKernel.Exceptions;
 
-public class TransferConsumer(
-        ILogger<TransferConsumer> logger,
+public class TransferReplyConsumer(
+        ILogger<TransferReplyConsumer> logger,
         ConnectionFactory rabbitConnection,
         IHealthCheckNotifier healthCheckNotifier,
         SystemStatusMonitor statusMonitor,
         IOptions<ConsumerConfiguration> queues,
         IServiceProvider serviceProvider
-    ) : BaseRabbitMQWorker(logger, rabbitConnection.CreateConnection(), healthCheckNotifier, statusMonitor, queues.Value.TransferUserQueue)
+    ) : BaseRabbitMQWorker(logger, rabbitConnection.CreateConnection(), healthCheckNotifier, statusMonitor, queues.Value.TransterUserReplyQueue)
 {
     protected override async Task ProcessMessageAsync(BasicDeliverEventArgs eventArgs, IModel channel)
     {
@@ -32,15 +28,11 @@ public class TransferConsumer(
         var message = Encoding.UTF8.GetString(body);
         var headers = eventArgs.BasicProperties.Headers;
         var operation = headers.GetUserEventType();
+        var userId = headers.GetHeaderValue("UserId");
         using var scope = serviceProvider.CreateScope();
-
-        if (operation is TransferOperations.TransferUser)
-        {
-            var userDto = JsonSerializer.Deserialize<UserTransferRequestDto>(message) ?? throw new InvalidBodyException();
-            logger.LogInformation("Processing request for user {userId}", userDto.UserId);
-            var transferUseCase = scope.ServiceProvider.GetRequiredService<ICreateTransferUseCase>();
-            await transferUseCase.ExecuteAsync(userDto);
-        }
+        var useCase = scope.ServiceProvider.GetServices<IInternalServicesResponseUseCase>().First(s => s.UseCase == operation);
+        var jsonString = Encoding.UTF8.GetString(body);
+        await useCase.ExecuteAsync(jsonString, userId);
         var database = scope.ServiceProvider.GetRequiredService<BebopDbContext>();
         channel.BasicAck(eventArgs.DeliveryTag, false);
         await database.SaveChangesAsync();

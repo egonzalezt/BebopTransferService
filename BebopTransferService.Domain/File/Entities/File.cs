@@ -16,7 +16,7 @@ public class File : Entity
     public string DocumentTitle { get; private set; }
     public string UrlDocument {  get; private set; }
 
-    public File BuildFromDto(FileDto fileDto)
+    public static File BuildFromDto(FileDto fileDto)
     {
         return new(fileDto.Id, fileDto.DocumentTitle, fileDto.UrlDocument);
     }

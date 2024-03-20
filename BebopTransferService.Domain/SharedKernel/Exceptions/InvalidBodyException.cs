@@ -1,6 +1,4 @@
-﻿namespace BebopTransferService.Workers.Exceptions;
-
-using Domain.SharedKernel.Exceptions;
+﻿namespace BebopTransferService.Domain.SharedKernel.Exceptions;
 
 public class InvalidBodyException : BusinessException
 {

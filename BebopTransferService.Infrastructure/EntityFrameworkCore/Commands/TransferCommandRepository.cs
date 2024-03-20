@@ -12,7 +12,7 @@ internal class TransferCommandRepository(BebopDbContext context) : ITransferComm
         return await context.Transfers.AnyAsync(u => u.Id == id);
     }
 
-    public async Task<Transfer?> GetById(Guid id)
+    public async Task<Transfer?> GetByIdAsync(Guid id)
     {
         return await context.Transfers.FirstOrDefaultAsync(u => u.Id == id);
     }

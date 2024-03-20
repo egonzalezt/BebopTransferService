@@ -17,6 +17,7 @@ internal class CreateTransferUseCase(
 {
     public async Task<Transfer> ExecuteAsync(UserTransferRequestDto transferRequestDto)
     {
+        logger.LogInformation("Transfer for the user {userId} begins", transferRequestDto.UserId);
         var transferExists = await transferCommandRepository.ExistsByUserIdAsync(transferRequestDto.UserId);
         var transfer = Transfer.BuildFromUserTransferRequest(transferRequestDto);
         if (!transferExists)
@@ -24,6 +25,7 @@ internal class CreateTransferUseCase(
             await transferQueryRepository.CreateAsync(transfer);
         }
         transferNotifier.NotifyTransferToInternalServices(transferRequestDto, TransferOperations.TransferUser.ToString());
+        logger.LogInformation("Agile Developers services are notified to process the transfer");
         return transfer;
     }
 }

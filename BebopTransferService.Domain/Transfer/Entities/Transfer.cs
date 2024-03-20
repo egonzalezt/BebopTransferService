@@ -26,12 +26,12 @@ public class Transfer : Entity
     public string UserName { get; private set; }
     public string UserAddress { get; private set; }
     public string Email { get; private set; }
+    public IEnumerable<File> Files { get; private set; }
     public bool IsKeroAuthUserDisabled { get; private set; }
     public bool IsCoplandUserDisabled { get; private set; }
     public bool IsStandUserDisabled { get; private set; }
-    public IEnumerable<File> Files { get; private set; }
 
-    public void SetFiles( IEnumerable<File> files)
+    public void SetFiles(IEnumerable<File> files)
     {
         Files = files;
     }
@@ -52,6 +52,15 @@ public class Transfer : Entity
     {
         SetUpdated();
         IsKeroAuthUserDisabled = true;
+    }
+
+    public bool IsReadyToBeTransferred() => IsKeroAuthUserDisabled && IsCoplandUserDisabled && IsStandUserDisabled;
+
+    public void Update(StandUserTransferResponseDto standUserTransferResponseDto)
+    {
+        UserName = standUserTransferResponseDto.Name;
+        UserAddress = standUserTransferResponseDto.Direction;
+        UserIdentificationNumber = standUserTransferResponseDto.IdentificationNumber;
     }
 
     public static Transfer BuildFromUserTransferRequest(UserTransferRequestDto userTransferRequestDto)
