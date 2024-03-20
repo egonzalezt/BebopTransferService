@@ -3,4 +3,5 @@
 public class PublisherConfiguration
 {
     public string UserTransferRequestBroadcastQueue { get; set; }
+    public string UserTransferNotificationQueue { get; set; }
 }

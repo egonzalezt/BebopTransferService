@@ -11,6 +11,7 @@ using Frieren_Guard;
 using Frieren_Guard.Events;
 using Exceptions;
 using Domain.SharedKernel.Exceptions;
+using BebopTransferService.Infrastructure.ExternalOperatorTransfer.Exceptions;
 
 public abstract class BaseRabbitMQWorker : BackgroundService
 {
@@ -80,6 +81,16 @@ public abstract class BaseRabbitMQWorker : BackgroundService
             catch (HeaderNotFoundException ex)
             {
                 _logger.LogError(ex, "Invalid EventType");
+                _channel.BasicAck(eventArgs.DeliveryTag, false);
+            }
+            catch (OperatorUnreachableException ex)
+            {
+                _logger.LogError(ex, "Impossible to notify external operator about the transfer");
+                _channel.BasicAck(eventArgs.DeliveryTag, false);
+            }
+            catch (BusinessException ex)
+            {
+                _logger.LogError(ex, "A business exception occurs during the request");
                 _channel.BasicAck(eventArgs.DeliveryTag, false);
             }
             catch (Exception ex)

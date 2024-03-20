@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 [Route("[controller]")]
 public class OperatorController(IGetOperatorUseCase getOperatorUseCase) : ControllerBase
 {
-    [HttpGet(Name = "Operators")]
+    [HttpGet("List")]
     public async Task<ActionResult<OperatorDto[]?>> GetAsync()
     {
         var operators = await getOperatorUseCase.GetOperatorsAsync();

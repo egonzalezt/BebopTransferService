@@ -7,20 +7,25 @@ using Infrastructure.Cache;
 using System.Text.Json;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Caching.Distributed;
+using Microsoft.Extensions.Options;
+using Infrastructure.Configuration;
 
-internal class GetOperatorUseCase(IOperatorsHttpClient operatorsHttpClient, ICacheStore cacheStore, ILogger<GetOperatorUseCase> logger) : IGetOperatorUseCase
+internal class GetOperatorUseCase(IOperatorsHttpClient operatorsHttpClient, IOptions<BaseTransferReplyUrl> options, ICacheStore cacheStore, ILogger<GetOperatorUseCase> logger) : IGetOperatorUseCase
 {
     private const string Key = "Operators";
+    private readonly BaseTransferReplyUrl baseTransferUrl;
 
-    public async Task<OperatorDto?> GetOperatorAsync(string operatorId)
+    public async Task<(OperatorDto? requestedOperator, string replyTransferUrl)> GetOperatorAsync(string operatorId)
     {
         var operators = await GetOperatorsFromGovCarpetaAsync();
-        return operators?.SingleOrDefault(op => op.OperatorId == operatorId);
+        var url = baseTransferUrl.Url;
+        return (operators?.SingleOrDefault(op => op.OperatorId == operatorId), url);
     }
 
     public async Task<OperatorDto[]?> GetOperatorsAsync()
     {
         var operators = await GetOperatorsFromGovCarpetaAsync();
+        var url = baseTransferUrl.Url;
         return operators;
     }
 

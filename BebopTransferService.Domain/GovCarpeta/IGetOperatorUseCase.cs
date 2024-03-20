@@ -3,6 +3,6 @@ using Dtos;
 
 public interface IGetOperatorUseCase
 {
-    Task<OperatorDto?> GetOperatorAsync(string operatorId);
+    Task<(OperatorDto? requestedOperator, string replyTransferUrl)> GetOperatorAsync(string operatorId);
     Task<OperatorDto[]?> GetOperatorsAsync();
 }
