@@ -21,15 +21,15 @@ public class Transfer : Entity
     private Transfer() { }
 
     public Guid UserId { get; private set; }
-    public long UserIdentificationNumber { get; private set; }
+    public long? UserIdentificationNumber { get; private set; }
     public string ExternalOperatorId { get; private set; }
-    public string UserName { get; private set; }
-    public string UserAddress { get; private set; }
+    public string? UserName { get; private set; }
+    public string? UserAddress { get; private set; }
     public string Email { get; private set; }
-    public IEnumerable<File> Files { get; private set; }
-    public bool IsKeroAuthUserDisabled { get; private set; }
-    public bool IsCoplandUserDisabled { get; private set; }
-    public bool IsStandUserDisabled { get; private set; }
+    public IEnumerable<File>? Files { get; private set; }
+    public bool IsKeroAuthUserDisabled { get; private set; } = false;
+    public bool IsCoplandUserDisabled { get; private set; } = false;
+    public bool IsStandUserDisabled { get; private set; } = false;
 
     public void SetFiles(IEnumerable<File> files)
     {
