@@ -12,6 +12,16 @@ public class OperatorsHttpClient(IHttpClientFactory httpClientFactory) : IOperat
         var response = await client.SendAsync(request);
         var responseContent = await response.Content.ReadAsStringAsync();
         var operators = JsonSerializer.Deserialize<OperatorDto[]>(responseContent);
+        if (operators != null)
+        {
+            foreach (var op in operators)
+            {
+                if (op.TransferAPIURL != null)
+                {
+                    op.TransferAPIURL = op.TransferAPIURL.Replace(" ", "");
+                }
+            }
+        }
         return operators;
     }
 }

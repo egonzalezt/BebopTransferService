@@ -25,7 +25,6 @@ internal class GetOperatorUseCase(IOperatorsHttpClient operatorsHttpClient, IOpt
     public async Task<OperatorDto[]?> GetOperatorsAsync()
     {
         var operators = await GetOperatorsFromGovCarpetaAsync();
-        var url = baseTransferUrl.Url;
         return operators;
     }
 

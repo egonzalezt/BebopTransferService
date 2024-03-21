@@ -20,7 +20,7 @@ public class TransferReplyConsumer(
         SystemStatusMonitor statusMonitor,
         IOptions<ConsumerConfiguration> queues,
         IServiceProvider serviceProvider
-    ) : BaseRabbitMQWorker(logger, rabbitConnection.CreateConnection(), healthCheckNotifier, statusMonitor, queues.Value.TransterUserReplyQueue)
+    ) : BaseRabbitMQWorker(logger, rabbitConnection.CreateConnection(), healthCheckNotifier, statusMonitor, queues.Value.TransferUserReplyQueue)
 {
     protected override async Task ProcessMessageAsync(BasicDeliverEventArgs eventArgs, IModel channel)
     {
