@@ -41,9 +41,7 @@ public class TransferConsumer(
             var transferUseCase = scope.ServiceProvider.GetRequiredService<ICreateTransferUseCase>();
             await transferUseCase.ExecuteAsync(userDto);
         }
-        var database = scope.ServiceProvider.GetRequiredService<BebopDbContext>();
         channel.BasicAck(eventArgs.DeliveryTag, false);
-        await database.SaveChangesAsync();
     }
 }
 
