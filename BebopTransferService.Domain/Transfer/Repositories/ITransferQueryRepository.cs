@@ -4,5 +4,5 @@ using Entities;
 public interface ITransferQueryRepository
 {
     Task CreateAsync(Transfer transfer);
-    void Update(Transfer transfer);
+    Task UpdateAsync(Transfer transfer);
 }

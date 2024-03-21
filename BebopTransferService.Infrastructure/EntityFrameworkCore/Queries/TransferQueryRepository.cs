@@ -14,8 +14,9 @@ public class TransferQueryRepository(BebopDbContext context) : ITransferQueryRep
         await context.SaveChangesAsync();
     }
 
-    public void Update(Transfer transfer)
+    public async Task UpdateAsync(Transfer transfer)
     {
         context.Transfers.Update(transfer);
+        await context.SaveChangesAsync();
     }
 }

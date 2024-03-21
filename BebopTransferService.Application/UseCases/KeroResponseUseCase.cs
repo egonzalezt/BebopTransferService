@@ -16,7 +16,7 @@ public class KeroResponseUseCase(ITransferCommandRepository transferCommandRepos
         var id = Guid.Parse(userId);
         var transfer = await transferCommandRepository.GetByUserIdAsync(id) ?? throw new TransferNotFoundException(userId);
         transfer.SetKeroAuthDisabled();
-        transferQueryRepository.Update(transfer);
+        await transferQueryRepository.UpdateAsync(transfer);
         await transferToExternalProvider.TryTransferAsync(transfer);
         logger.LogInformation("Kero request complete");
         return;
