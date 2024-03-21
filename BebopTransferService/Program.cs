@@ -28,13 +28,9 @@ app.UseCors(builder =>
            .WithExposedHeaders("X-Pagination-Total-Pages");
 });
 
-
-app.UseHttpsRedirection();
-
 app.UseAuthorization();
 
 app.MapControllers();
-
 
 using (var scope = app.Services.CreateScope())
 {

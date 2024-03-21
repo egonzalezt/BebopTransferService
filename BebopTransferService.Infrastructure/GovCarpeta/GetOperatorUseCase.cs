@@ -12,7 +12,6 @@ using Infrastructure.Configuration;
 
 internal class GetOperatorUseCase(IOperatorsHttpClient operatorsHttpClient, IOptions<BaseTransferReplyUrl> options, ICacheStore cacheStore, ILogger<GetOperatorUseCase> logger) : IGetOperatorUseCase
 {
-    private const string Key = "Operators";
     private readonly BaseTransferReplyUrl baseTransferUrl;
 
     public async Task<(OperatorDto? requestedOperator, string replyTransferUrl)> GetOperatorAsync(string operatorId)
@@ -49,7 +48,7 @@ internal class GetOperatorUseCase(IOperatorsHttpClient operatorsHttpClient, IOpt
         try
         {
             var serializerOptions = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
-            return await cacheStore.GetAsync<OperatorDto[]>(Key, serializerOptions);
+            return await cacheStore.GetAsync<OperatorDto[]>("Operators", serializerOptions);
         }
         catch (Exception ex)
         {
@@ -65,11 +64,11 @@ internal class GetOperatorUseCase(IOperatorsHttpClient operatorsHttpClient, IOpt
 
         try
         {
-            await cacheStore.SaveAsync(Key, operators, cacheOptions, serializerOptions);
+            await cacheStore.SaveAsync("Operators", operators, cacheOptions, serializerOptions);
         }
         catch (Exception ex)
         {
-            logger.LogInformation($"Error saving operators to cache: {ex.Message}");
+            logger.LogInformation("Error saving operators to cache: {message}", ex.Message);
         }
     }
 

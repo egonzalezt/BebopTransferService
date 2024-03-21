@@ -9,7 +9,7 @@ internal class TransferCommandRepository(BebopDbContext context) : ITransferComm
 {
     public async Task<bool> ExistsByUserIdAsync(Guid id)
     {
-        return await context.Transfers.AnyAsync(u => u.Id == id);
+        return await context.Transfers.AnyAsync(u => u.UserId == id);
     }
 
     public async Task<Transfer?> GetByIdAsync(Guid id)
