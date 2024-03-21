@@ -23,7 +23,7 @@ public class CoplandResponseUseCase(ITransferCommandRepository transferCommandRe
         var files = filesDto.Select(File.BuildFromDto).ToList();
         transfer.SetFiles(files);
         transfer.SetCoplandDisabled();
-        transferQueryRepository.Update(transfer);
+        await transferQueryRepository.UpdateAsync(transfer);
         await transferToExternalProvider.TryTransferAsync(transfer);
         logger.LogInformation("Copland request complete");
         return;

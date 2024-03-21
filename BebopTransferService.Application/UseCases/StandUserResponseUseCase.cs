@@ -21,7 +21,7 @@ public class StandUserResponseUseCase(ITransferCommandRepository transferCommand
         var transfer = await transferCommandRepository.GetByUserIdAsync(id) ?? throw new TransferNotFoundException(userId);
         transfer.Update(userDto);
         transfer.SetStandUserDisabled();
-        transferQueryRepository.Update(transfer);
+        await transferQueryRepository.UpdateAsync(transfer);
         await transferToExternalProvider.TryTransferAsync(transfer);
         logger.LogInformation("StandUsers request complete");
         return;

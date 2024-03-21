@@ -48,7 +48,7 @@ internal class GetOperatorUseCase(IOperatorsHttpClient operatorsHttpClient, IOpt
         try
         {
             var serializerOptions = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
-            return await cacheStore.GetAsync<OperatorDto[]>("Operators", serializerOptions);
+            return await cacheStore.GetAsync<OperatorDto[]>("bebop-transferOperators", serializerOptions);
         }
         catch (Exception ex)
         {
