@@ -11,7 +11,6 @@ using Workers.Extensions;
 using Microsoft.Extensions.DependencyInjection;
 using System.Text;
 using Application.Interfaces;
-using Infrastructure.EntityFrameworkCore.DbContext;
 
 public class TransferReplyConsumer(
         ILogger<TransferReplyConsumer> logger,

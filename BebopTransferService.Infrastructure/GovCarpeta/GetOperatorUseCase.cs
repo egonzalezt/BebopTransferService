@@ -64,7 +64,7 @@ internal class GetOperatorUseCase(IOperatorsHttpClient operatorsHttpClient, IOpt
 
         try
         {
-            await cacheStore.SaveAsync("Operators", operators, cacheOptions, serializerOptions);
+            await cacheStore.SaveAsync("bebop-transferOperators", operators, cacheOptions, serializerOptions);
         }
         catch (Exception ex)
         {
