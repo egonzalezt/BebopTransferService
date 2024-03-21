@@ -9,8 +9,9 @@ using Polly;
 using Exceptions;
 using Domain.Transfer.Dtos;
 using Domain.Transfer;
+using Microsoft.Extensions.Logging;
 
-internal class ExternalOperatorNotifier(IHttpClientFactory httpClientFactory, IAsyncPolicy<HttpResponseMessage> retryPolicy) : IExternalOperatorNotifier
+internal class ExternalOperatorNotifier(IHttpClientFactory httpClientFactory, IAsyncPolicy<HttpResponseMessage> retryPolicy, ILogger<ExternalOperatorNotifier> logger) : IExternalOperatorNotifier
 {
     private readonly HttpClient _externalOperatorsClient = httpClientFactory.CreateClient("ExternalOperators");
 
@@ -23,6 +24,7 @@ internal class ExternalOperatorNotifier(IHttpClientFactory httpClientFactory, IA
         {
             var content = new StringContent(jsonData, Encoding.UTF8, "application/json");
             var response = await _externalOperatorsClient.PostAsync(externalOperatorUrl, content);
+            logger.LogInformation("Response: {response}", response.Content.ReadAsStringAsync());
             response.EnsureSuccessStatusCode();
             return;
         }

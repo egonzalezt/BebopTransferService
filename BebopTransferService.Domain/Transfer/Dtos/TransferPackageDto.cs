@@ -22,8 +22,12 @@ public class TransferPackageDto
 
     public static TransferPackageDto BuildFromTransfer(Transfer transfer, string callbackUrl)
     {
-        var files = transfer.Files.Select(FileTransferDto.BuildFromFile).ToArray();
-        if(transfer.UserIdentificationNumber is null) 
+        var files = new List<FileTransferDto>();
+        if(transfer.Files is not null)
+        {
+            files = transfer.Files.Select(FileTransferDto.BuildFromFile).ToList();
+        }
+        if (transfer.UserIdentificationNumber is null) 
         {
             throw new IdentificationNumberNotFound();
         }
@@ -32,7 +36,7 @@ public class TransferPackageDto
             Id = transfer.UserIdentificationNumber.Value,
             Address = transfer.UserAddress,
             Email = transfer.Email,
-            Files = files,
+            Files = files.ToArray(),
             Name = transfer.UserName,
             CallbackUrl = callbackUrl
         };

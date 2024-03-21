@@ -17,7 +17,7 @@ internal class GetOperatorUseCase(IOperatorsHttpClient operatorsHttpClient, IOpt
     public async Task<(OperatorDto? requestedOperator, string replyTransferUrl)> GetOperatorAsync(string operatorId)
     {
         var operators = await GetOperatorsFromGovCarpetaAsync();
-        var url = baseTransferUrl.Url;
+        var url = "https://stands-gw-di2h7zbs.uk.gateway.dev/api/transfer-complete";
         return (operators?.SingleOrDefault(op => op.OperatorId == operatorId), url);
     }
 
