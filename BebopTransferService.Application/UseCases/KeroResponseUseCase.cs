@@ -12,7 +12,7 @@ public class KeroResponseUseCase(ITransferCommandRepository transferCommandRepos
     public async Task ExecuteAsync(string body, string userId)
     {
         var id = Guid.Parse(userId);
-        var transfer = await transferCommandRepository.GetByIdAsync(id) ?? throw new TransferNotFoundException(userId);
+        var transfer = await transferCommandRepository.GetByUserIdAsync(id) ?? throw new TransferNotFoundException(userId);
         transfer.SetKeroAuthDisabled();
         transferQueryRepository.Update(transfer);
         await transferToExternalProvider.TryTransferAsync(transfer);

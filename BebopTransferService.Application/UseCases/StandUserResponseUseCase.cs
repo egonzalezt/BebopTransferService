@@ -16,7 +16,7 @@ public class StandUserResponseUseCase(ITransferCommandRepository transferCommand
     {
         var id = Guid.Parse(userId);
         var userDto = JsonSerializer.Deserialize<StandUserTransferResponseDto>(body) ?? throw new InvalidBodyException();
-        var transfer = await transferCommandRepository.GetByIdAsync(id) ?? throw new TransferNotFoundException(userId);
+        var transfer = await transferCommandRepository.GetByUserIdAsync(id) ?? throw new TransferNotFoundException(userId);
         transfer.Update(userDto);
         transfer.SetStandUserDisabled();
         transferQueryRepository.Update(transfer);
