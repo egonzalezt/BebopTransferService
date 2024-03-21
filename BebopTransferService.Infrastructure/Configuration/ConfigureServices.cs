@@ -13,6 +13,7 @@ using Infrastructure.Cache;
 using Polly;
 using Infrastructure.ExternalOperatorTransfer;
 using Infrastructure.UserNotifier;
+using StackExchange.Redis;
 
 public static class ConfigureServices
 {
@@ -35,10 +36,17 @@ public static class ConfigureServices
         {
             return provider.GetRequiredService<IAsyncPolicy<HttpResponseMessage>>();
         });
+
         var cacheOptions = new CacheOptions();
         configuration.Bind("CacheOptions", cacheOptions);
+        var redisOptions = new ConfigurationOptions
+        {
+            AbortOnConnectFail = true,
+            ConnectTimeout = cacheOptions.ConnectionTimeout
+        };
         services.AddStackExchangeRedisCache(options =>
         {
+            options.ConfigurationOptions = redisOptions;
             options.Configuration = cacheOptions.ConnectionString;
             options.InstanceName = cacheOptions.InstanceName;
         });

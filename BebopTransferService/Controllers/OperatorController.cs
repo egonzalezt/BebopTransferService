@@ -16,7 +16,7 @@ public class OperatorController(IGetOperatorUseCase getOperatorUseCase) : Contro
         {
             return Ok();
         }
-        var operatorsWithTransferUrl = operators.Where(op => op.TransferAPIURL is not null || !string.IsNullOrEmpty(op.TransferAPIURL));
+        var operatorsWithTransferUrl = operators.Where(op => op.TransferAPIURL is not null || !string.IsNullOrEmpty(op.TransferAPIURL)).Where(o => o.OperatorId != "65ed0ef4fe35fb0019dc3297");
         return Ok(operatorsWithTransferUrl);
     }
 }
