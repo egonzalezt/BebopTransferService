@@ -12,7 +12,7 @@ using Infrastructure.Configuration;
 
 internal class GetOperatorUseCase(IOperatorsHttpClient operatorsHttpClient, IOptions<BaseTransferReplyUrl> options, ICacheStore cacheStore, ILogger<GetOperatorUseCase> logger) : IGetOperatorUseCase
 {
-    private readonly BaseTransferReplyUrl baseTransferUrl;
+    private readonly BaseTransferReplyUrl baseTransferUrl = options.Value;
 
     public async Task<(OperatorDto? requestedOperator, string replyTransferUrl)> GetOperatorAsync(string operatorId)
     {
@@ -64,7 +64,7 @@ internal class GetOperatorUseCase(IOperatorsHttpClient operatorsHttpClient, IOpt
 
         try
         {
-            await cacheStore.SaveAsync("Operators", operators, cacheOptions, serializerOptions);
+            await cacheStore.SaveAsync("bebop-transferOperators", operators, cacheOptions, serializerOptions);
         }
         catch (Exception ex)
         {

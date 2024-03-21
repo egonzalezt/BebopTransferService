@@ -96,6 +96,7 @@ public abstract class BaseRabbitMQWorker : BackgroundService
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error processing user");
+                _channel.BasicAck(eventArgs.DeliveryTag, false);
             }
         };
 
