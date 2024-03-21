@@ -34,8 +34,8 @@ public class TransferReplyConsumer(
         var jsonString = Encoding.UTF8.GetString(body);
         await useCase.ExecuteAsync(jsonString, userId);
         var database = scope.ServiceProvider.GetRequiredService<BebopDbContext>();
-        channel.BasicAck(eventArgs.DeliveryTag, false);
         await database.SaveChangesAsync();
+        channel.BasicAck(eventArgs.DeliveryTag, false);
     }
 }
 

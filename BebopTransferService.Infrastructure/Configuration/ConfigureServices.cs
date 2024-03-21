@@ -41,7 +41,6 @@ public static class ConfigureServices
         configuration.Bind("CacheOptions", cacheOptions);
         var redisOptions = new ConfigurationOptions
         {
-            AbortOnConnectFail = true,
             ConnectTimeout = cacheOptions.ConnectionTimeout
         };
         services.AddStackExchangeRedisCache(options =>
