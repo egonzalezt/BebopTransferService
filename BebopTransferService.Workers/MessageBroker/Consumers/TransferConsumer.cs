@@ -14,7 +14,6 @@ using Domain.Transfer;
 using System.Text.Json;
 using Domain.User.Dtos;
 using Application.Interfaces;
-using Infrastructure.EntityFrameworkCore.DbContext;
 using Domain.SharedKernel.Exceptions;
 
 public class TransferConsumer(
@@ -41,9 +40,7 @@ public class TransferConsumer(
             var transferUseCase = scope.ServiceProvider.GetRequiredService<ICreateTransferUseCase>();
             await transferUseCase.ExecuteAsync(userDto);
         }
-        var database = scope.ServiceProvider.GetRequiredService<BebopDbContext>();
         channel.BasicAck(eventArgs.DeliveryTag, false);
-        await database.SaveChangesAsync();
     }
 }
 
