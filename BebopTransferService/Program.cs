@@ -1,5 +1,6 @@
 using BebopTransferService.Extensions;
 using BebopTransferService.Infrastructure.EntityFrameworkCore.DbContext;
+using BebopTransferService.Middlewares;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -29,6 +30,8 @@ app.UseCors(builder =>
 });
 
 app.UseAuthorization();
+
+app.UseMiddleware<ExceptionHandlingMiddleware>();
 
 app.MapControllers();
 
