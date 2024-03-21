@@ -52,6 +52,9 @@ public static class ConfigureServices
         services.AddSingleton<ICacheStore, CacheStore>();
         services.AddScoped<IExternalOperatorNotifier, ExternalOperatorNotifier>();
         services.AddSingleton<IUserTransferCompleteNotification, UserTransferCompleteNotification>();
+        services.Configure<BaseTransferReplyUrl>(options =>
+            configuration.GetSection("BaseTransferReplyUrl").Bind(options)
+        );
     }
 
     private static IAsyncPolicy<HttpResponseMessage> GetRetryPolicy()

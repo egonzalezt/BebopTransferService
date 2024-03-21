@@ -20,9 +20,9 @@ public class CoplandResponseUseCase(ITransferCommandRepository transferCommandRe
         var id = Guid.Parse(userId);
         var filesDto = JsonSerializer.Deserialize<IEnumerable<FileDto>>(body) ?? throw new InvalidBodyException();
         var transfer = await transferCommandRepository.GetByUserIdAsync(id) ?? throw new TransferNotFoundException(userId);
-        var files = filesDto.Select(File.BuildFromDto).ToList();
-        transfer.SetFiles(files);
+        var files = filesDto.Select(f => File.BuildFromDto(f,transfer.Id)).ToList();
         transfer.SetCoplandDisabled();
+        await transferQueryRepository.AddFilesAsync(files);
         await transferQueryRepository.UpdateAsync(transfer);
         await transferToExternalProvider.TryTransferAsync(transfer);
         logger.LogInformation("Copland request complete");
