@@ -10,7 +10,7 @@ public class TransferQueryRepository(BebopDbContext context) : ITransferQueryRep
 
     public async Task CreateAsync(Transfer transfer)
     {
-        await context.AddAsync(transfer);
+        context.Transfers.Add(transfer);
         await context.SaveChangesAsync();
     }
 
