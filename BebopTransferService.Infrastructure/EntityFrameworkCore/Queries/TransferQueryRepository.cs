@@ -16,6 +16,6 @@ public class TransferQueryRepository(BebopDbContext context) : ITransferQueryRep
 
     public void Update(Transfer transfer)
     {
-        context.Update(transfer);
+        context.Transfers.Update(transfer);
     }
 }

@@ -1,6 +1,6 @@
 ﻿namespace BebopTransferService.Infrastructure.EntityFrameworkCore.Commands;
 
-using BebopTransferService.Infrastructure.EntityFrameworkCore.DbContext;
+using DbContext;
 using Domain.Transfer.Entities;
 using Domain.Transfer.Repositories;
 using Microsoft.EntityFrameworkCore;
@@ -15,5 +15,10 @@ internal class TransferCommandRepository(BebopDbContext context) : ITransferComm
     public async Task<Transfer?> GetByIdAsync(Guid id)
     {
         return await context.Transfers.FirstOrDefaultAsync(u => u.Id == id);
+    }
+
+    public async Task<Transfer?> GetByUserIdAsync(Guid id)
+    {
+        return await context.Transfers.FirstOrDefaultAsync(u => u.UserId == id);
     }
 }

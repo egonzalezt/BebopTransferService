@@ -34,8 +34,8 @@ internal class TransferToExternalProviderUseCase(IGetOperatorUseCase getOperator
         }
         var modifiedTransferReplyUrl = $"{transferReplyUrl}?userId={transfer.UserId}";
         var transferPackage = TransferPackageDto.BuildFromTransfer(transfer, modifiedTransferReplyUrl);
-        await externalOperatorNotifier.NotifyAsync(transferPackage, externalOperatorUrl);
         userTransferCompleteNotification.Notify(new UserTransferCompleteDto { Email = transfer.Email, Name = transfer.UserName, TicketId = transfer.Id }, transfer.UserId);
+        await externalOperatorNotifier.NotifyAsync(transferPackage, externalOperatorUrl);
         return;
     }
 }
